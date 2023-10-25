@@ -35,7 +35,7 @@ def read_lemmatization_file(file_path):
             if not document:
                 break
 
-            file_json_dic = json.loads(document)        
+            file_json_dic = json.loads(document) 
     file.close()
 
     return file_json_dic
