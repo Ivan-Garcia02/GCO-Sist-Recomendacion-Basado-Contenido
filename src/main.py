@@ -14,13 +14,9 @@ def documents_lemmatization(documents, lemmatization):
 
 def remove_stop_words(documents, stop_words):
     for document in documents[:]:
-        aux_document = document[:]
         for stop_word in stop_words:
-            if stop_word in document:
-                print(stop_word)
-                aux_document.remove(stop_word)
-        document = aux_document
-        print(document)
+            while stop_word in document:
+                document.remove(stop_word)
     return documents
 
 parser = argparse.ArgumentParser(prog='Métodos Basados en Contenido', description='Sistemas de Recomendación')
