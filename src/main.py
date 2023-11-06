@@ -12,7 +12,6 @@ def documents_lemmatization(documents, lemmatization):
                 documents[i][j] = lemmatization[documents[i][j]]
             except:
                 pass
-           
     return documents
 
 def remove_stop_words(documents, stop_words):
@@ -37,12 +36,10 @@ documents = read_documents_file(args.documentsPath)
 stop_words = read_stop_words_file(args.stopWordsPath)
 lemmatization = read_lemmatization_file(args.lemmatizationPath)
 
-print(documents)
 documents_lemmatization(documents, lemmatization)
 remove_stop_words(documents, stop_words)
-print(documents)
 
-# Cosntruir la matriz termino-documento
+# Construir la matriz término-documento
 values = []
 for document in documents[:]: # Obtener las columnas con las palabras sin repetir en values
     for word in document[:]:
