@@ -4,7 +4,7 @@ import math
 import numpy as np
 from file_reader import read_documents_file, read_stop_words_file, read_lemmatization_file
 from tools import documents_lemmatization, remove_stop_words, get_terms, build_matrix_term_doc, get_idf, build_matrix_tf, get_length_vector, build_matrix_tf_idf, build_matrix_tf_normalized, cosine_similitary
-from file_writer import print_similitary_cosine, print_matrix, print_idf
+from file_writer import print_similitary_cosine, print_matrix, print_idf, print_matrixs
 # python3 src/main.py -d test_files/documents-01.txt -s test_files/stop-words-en.txt -l test_files/corpus-en.txt
 
 parser = argparse.ArgumentParser(prog='Métodos Basados en Contenido', description='Sistemas de Recomendación')
@@ -46,3 +46,8 @@ print_matrix(name_file, matrix_tf, terms, max_string_length, "Matrix TF")
 print_idf(name_file, values_idf, max_string_length)
 print_matrix(name_file, matrix_tf_idf, terms, max_string_length, "Matrix TF-IDF")
 print_similitary_cosine(name_file, similitary_vector)
+
+# Imprime opcion 2
+print_matrixs("salida2.txt", matrix, matrix_tf, matrix_tf_idf, terms, max_string_length)
+print_idf("salida2.txt", values_idf, max_string_length)
+print_similitary_cosine("salida2.txt", similitary_vector)
