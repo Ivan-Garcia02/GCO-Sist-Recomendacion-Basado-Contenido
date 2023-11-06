@@ -105,5 +105,5 @@ def cosine_similitary(matrix_tfn, terms):
             val_sum = 0
             for index_termino in range(len(terms)):
                 val_sum += matrix_tfn[index_doc1][index_termino] * matrix_tfn[index_doc2][index_termino]
-            similitary_vector.append([index_doc1 + 1, index_doc2 + 1, val_sum])
+            similitary_vector.append([index_doc1 + 1, index_doc2 + 1, round(val_sum, 6)])
     return similitary_vector
