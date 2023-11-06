@@ -39,9 +39,9 @@ lemmatization = read_lemmatization_file(args.lemmatizationPath)
 documents_lemmatization(documents, lemmatization)
 remove_stop_words(documents, stop_words)
 
-# Construir la matriz término-documento
+# Construye la matriz término-documento
 values = []
-for document in documents[:]: # Obtener las columnas con las palabras sin repetir en values
+for document in documents[:]: # Obtiene las columnas con las palabras sin repetir en values
     for word in document[:]:
         try:
             values.index(word)
@@ -49,13 +49,13 @@ for document in documents[:]: # Obtener las columnas con las palabras sin repeti
             values.append(word)
 print(values)
 
-matrix = np.zeros((len(documents), len(values))) # Creamos la matriz con 0s
-for idex_doc in range(len(documents)): # Hacemos el conteo para la matriz termino documento
-    for word in documents[idex_doc]:
+matrix = np.zeros((len(documents), len(values))) # Crea la matriz con 0s
+for index_doc in range(len(documents)): # Hacemos el conteo para la matriz término-documento
+    for word in documents[index_doc]:
         index_word = values.index(word)
-        matrix[idex_doc][index_word] += 1
+        matrix[index_doc][index_word] += 1
 
-# Calcular df + idf
+# Calcula DF + IDF
 values_df = []
 values_idf = []
 n_documents = len(documents)
@@ -66,10 +66,9 @@ for index_word in range(len(values)):
     values_df.append(val_sum)
     values_idf.append(round(math.log10(n_documents/val_sum), 3))
 
-
-# Imprimimos la matrix en un archivo + df + idf
+# Imprime la matriz en un archivo + DF + IDF
 with open('salida.txt', mode='w') as file_object:
-    max_string_length = max (len(word) for word in values) # Obtener la palabra mas larga para max de columna
+    max_string_length = max (len(word) for word in values)
     file_object.write("{:<{width}} ".format('', width=max_string_length))
     for word in values:
         file_object.write("{:<{width}} ".format(word, width=max_string_length))
@@ -92,7 +91,7 @@ with open('salida.txt', mode='w') as file_object:
     file_object.write('\n\n')
 print(matrix)
 
-# Matrix tf
+# Matriz TF
 matrix_tf = []
 for document in matrix[:]:
     vec_aux = []
@@ -103,9 +102,9 @@ for document in matrix[:]:
             vec_aux.append(0.0)
     matrix_tf.append(vec_aux)
 
-# Imprimimos la matrix en un archivo
+# Imprime la matriz en un archivo
 with open('salida.txt', mode='a') as file_object:
-    max_string_length = max (len(word) for word in values) # Obtener la palabra mas larga para max de columna
+    max_string_length = max (len(word) for word in values)
     file_object.write("{:<{width}} ".format('VALORES TF', width=max_string_length))
     for word in values:
         file_object.write("{:<{width}} ".format(word, width=max_string_length))
