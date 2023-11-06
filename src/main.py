@@ -3,23 +3,8 @@ import json
 import math
 import numpy as np
 from file_reader import read_documents_file, read_stop_words_file, read_lemmatization_file
+from tools import documents_lemmatization, remove_stop_words, get_terms, build_matrix_term_doc, get_idf, build_matrix_tf, get_length_vector, build_matrix_tf_idf, build_matrix_tf_normalized, cosine_similitary
 # python3 src/main.py -d test_files/documents-01.txt -s test_files/stop-words-en.txt -l test_files/corpus-en.txt
-
-def documents_lemmatization(documents, lemmatization):
-    for i in range(len(documents)):
-        for j in range(len(documents[i])):
-            try:
-                documents[i][j] = lemmatization[documents[i][j]]
-            except:
-                pass
-    return documents
-
-def remove_stop_words(documents, stop_words):
-    for document in documents[:]:
-        for stop_word in stop_words:
-            while stop_word in document:
-                document.remove(stop_word)
-    return documents
 
 parser = argparse.ArgumentParser(prog='Métodos Basados en Contenido', description='Sistemas de Recomendación')
 parser.add_argument('-d', '--documentsPath', type=str, required=True, help="Fichero de entrada de texto plano con documentos")
@@ -40,31 +25,11 @@ documents_lemmatization(documents, lemmatization)
 remove_stop_words(documents, stop_words)
 
 # Construye la matriz término-documento
-values = []
-for document in documents[:]: # Obtiene las columnas con las palabras sin repetir en values
-    for word in document[:]:
-        try:
-            values.index(word)
-        except: 
-            values.append(word)
-print(values)
-
-matrix = np.zeros((len(documents), len(values))) # Crea la matriz con 0s
-for index_doc in range(len(documents)): # Hacemos el conteo para la matriz término-documento
-    for word in documents[index_doc]:
-        index_word = values.index(word)
-        matrix[index_doc][index_word] += 1
+values = get_terms(documents)
+matrix = build_matrix_term_doc(documents, values)
 
 # Calcula DF + IDF
-values_df = []
-values_idf = []
-n_documents = len(documents)
-for index_word in range(len(values)):
-    val_sum = 0
-    for index_doc in range(len(matrix)):
-        val_sum += matrix[index_doc][index_word]
-    values_df.append(val_sum)
-    values_idf.append(round(math.log10(n_documents/val_sum), 3))
+values_idf = get_idf(len(documents), matrix, values)
 
 # Imprime la matriz en un archivo + DF + IDF
 with open('salida.txt', mode='w') as file_object:
@@ -80,10 +45,10 @@ with open('salida.txt', mode='w') as file_object:
             file_object.write("{:<{width}} ".format(col, width=max_string_length))
         file_object.write('\n')
 
-    file_object.write("{:<{width}} ".format('DF', width=max_string_length))
-    for df in values_df:
-        file_object.write("{:<{width}} ".format(df, width=max_string_length))
-    file_object.write('\n')
+    #file_object.write("{:<{width}} ".format('DF', width=max_string_length))
+    #for df in values_df:
+    #    file_object.write("{:<{width}} ".format(df, width=max_string_length))
+    #file_object.write('\n')
 
     file_object.write("{:<{width}} ".format('IDF', width=max_string_length))
     for idf in values_idf:
@@ -92,15 +57,13 @@ with open('salida.txt', mode='w') as file_object:
 print(matrix)
 
 # Matriz TF
-matrix_tf = []
-for document in matrix[:]:
-    vec_aux = []
-    for number in document[:]:
-        if number > 0:
-            vec_aux.append(round(1 + math.log10(number), 3))
-        else:
-            vec_aux.append(0.0)
-    matrix_tf.append(vec_aux)
+matrix_tf = build_matrix_tf(matrix)
+
+# Longitud de vectores
+long_vectores = get_length_vector(matrix_tf)
+
+# Matriz TF-IDF
+matrix_tf_idf = build_matrix_tf_idf(matrix_tf, values_idf)
 
 # Imprime la matriz en un archivo
 with open('salida.txt', mode='a') as file_object:
@@ -115,4 +78,49 @@ with open('salida.txt', mode='a') as file_object:
         for col in matrix_tf[index_fila]:
             file_object.write("{:<{width}} ".format(col, width=max_string_length))
         file_object.write('\n')
-print(matrix_tf)
+    file_object.write('\n')
+
+    file_object.write("{:<{width}} ".format('VALORES TF-IDF', width=max_string_length))
+    for word in values:
+        file_object.write("{:<{width}} ".format(word, width=max_string_length))
+    file_object.write('\n')
+
+    for index_fila in range(len(matrix_tf_idf)):
+        file_object.write("{:<{width}} ".format(f'Documento {index_fila + 1}', width=max_string_length))
+        for col in matrix_tf_idf[index_fila]:
+            file_object.write("{:<{width}} ".format(col, width=max_string_length))
+        file_object.write('\n')
+
+    file_object.write("{:<{width}} ".format('VALORES longitud vector', width=max_string_length))
+    for word in long_vectores:
+        file_object.write("{:<{width}} ".format(word, width=max_string_length))
+    file_object.write('\n\n')
+
+
+# Normalizacion de vectores
+matrix_tf_normalizada = build_matrix_tf_normalized(matrix_tf)
+
+# Longitud de vectores
+long_vectores_normalizada = get_length_vector(matrix_tf_normalizada)
+
+# Imprime la matriz en un archivo
+with open('salida.txt', mode='a') as file_object:
+    file_object.write("{:<{width}} ".format('VALORES TFN', width=max_string_length))
+    for word in values:
+        file_object.write("{:<{width}} ".format(word, width=max_string_length))
+    file_object.write('\n')
+
+    for index_fila in range(len(matrix_tf_normalizada)):
+        file_object.write("{:<{width}} ".format(f'Documento {index_fila + 1}', width=max_string_length))
+        for col in matrix_tf_normalizada[index_fila]:
+            file_object.write("{:<{width}} ".format(col, width=max_string_length))
+        file_object.write('\n')
+
+    file_object.write("{:<{width}} ".format('VALORES longitud vector N', width=max_string_length))
+    for word in long_vectores_normalizada:
+        file_object.write("{:<{width}} ".format(word, width=max_string_length))
+    file_object.write('\n')
+
+# Similidad entre documentos
+similitud_coseno = cosine_similitary(matrix_tf_normalizada, values)
+print(similitud_coseno)
