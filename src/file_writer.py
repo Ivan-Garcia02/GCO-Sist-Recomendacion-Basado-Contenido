@@ -1,5 +1,5 @@
 def print_matrix(file_name, matrix, terms, max_string_length, name_matrix):
-    with open('salida.txt', mode='a') as file_object:
+    with open(file_name, mode='a') as file_object:
         file_object.write("{:<{width}} ".format(name_matrix, width=max_string_length))
         for word in terms:
             file_object.write("{:<{width}} ".format(word, width=max_string_length))

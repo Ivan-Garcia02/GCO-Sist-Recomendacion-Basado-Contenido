@@ -28,7 +28,7 @@ Esta función recibe la ruta del fichero que contiene las palabras de parada. Du
 
 #### `read_lemmatization_file`
 
-Esta función recibe la ruta del fichero de lematización.
+Esta función recibe la ruta del archivo de lematización. Durante su ejecución, lee el archivo y devuelve un diccionario JSON que contiene la asociación de palabras para la lematización, resultado del análisis del archivo JSON.
 
 ## Ejemplo de uso
 
@@ -39,3 +39,4 @@ Ejecutamos el intérprete _python3_ con el fichero _main.py_ y añadimos las opc
 - -d | --documentsPath: Ruta del fichero de texto plano con extensión _.txt._ que contiene los documentos a analizar.
 - -s | --stopWordsPath: Ruta del fichero con palabras de parada a descartar durante el proceso de recomendación.
 - -l | --lemmatizationPath: Ruta del fichero de lematización de términos.
+- -f | --fileOut: Fichero de salida de resultados, por defecto `salida.txt`

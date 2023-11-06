@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(prog='Métodos Basados en Contenido', descripti
 parser.add_argument('-d', '--documentsPath', type=str, required=True, help="Fichero de entrada de texto plano con documentos")
 parser.add_argument('-s', '--stopWordsPath', type=str, required=True, help="Fichero de entrada con palabras de parada")
 parser.add_argument('-l', '--lemmatizationPath', type=str, required=True, help="Fichero de entrada con lemantizacion de terminos")
+parser.add_argument('-f', '--fileOut', type=str, required=False, default="salida.txt", help="Fichero de salida de resultados")
 
 args = parser.parse_args()
 
@@ -26,34 +27,22 @@ documents_lemmatization(documents, lemmatization)
 remove_stop_words(documents, stop_words)
 
 # Construye la matriz término-documento
-values = get_terms(documents)
-matrix = build_matrix_term_doc(documents, values)
+terms = get_terms(documents)
+matrix = build_matrix_term_doc(documents, terms)
 
-# Calcula DF + IDF
-values_idf = get_idf(len(documents), matrix, values)
-
-# Matriz TF
-matrix_tf = build_matrix_tf(matrix)
-
-# Longitud de vectores
-long_vectores = get_length_vector(matrix_tf)
-
-# Matriz TF-IDF
-matrix_tf_idf = build_matrix_tf_idf(matrix_tf, values_idf)
-
-# Normalizacion de vectores
-matrix_tf_normalizada = build_matrix_tf_normalized(matrix_tf)
-
-# Longitud de vectores
-long_vectores_normalizada = get_length_vector(matrix_tf_normalizada)
+matrix_tf = build_matrix_tf(matrix) # Matriz TF
+values_idf = get_idf(len(documents), matrix, terms) # Calcula DF + IDF
+matrix_tf_idf = build_matrix_tf_idf(matrix_tf, values_idf) # Matriz TF-IDF
 
 # Similidad entre documentos
-similitary_vector = cosine_similitary(matrix_tf_normalizada, values)
+matrix_tf_normalized = build_matrix_tf_normalized(matrix_tf) # Normalizacion de vectores
+similitary_vector = cosine_similitary(matrix_tf_normalized, terms)
 
 # Imprime las matrix de terminos, matriz TF, IDF, matriz TF-IDF y similitud de coseno
-max_string_length = max (len(word) for word in values)
-print_matrix("salida.txt", matrix, values, max_string_length, "Matrix terms")
-print_matrix("salida.txt", matrix_tf, values, max_string_length, "Matrix TF")
-print_idf("salida.txt", values_idf, max_string_length)
-print_matrix("salida.txt", matrix_tf_idf, values, max_string_length, "Matrix TF-IDF")
-print_similitary_cosine("salida.txt", similitary_vector)
+name_file = args.fileOut
+max_string_length = max (len(word) for word in terms)
+print_matrix(name_file, matrix, terms, max_string_length, "Matrix terms")
+print_matrix(name_file, matrix_tf, terms, max_string_length, "Matrix TF")
+print_idf(name_file, values_idf, max_string_length)
+print_matrix(name_file, matrix_tf_idf, terms, max_string_length, "Matrix TF-IDF")
+print_similitary_cosine(name_file, similitary_vector)
