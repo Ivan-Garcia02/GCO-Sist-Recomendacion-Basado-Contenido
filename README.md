@@ -34,21 +34,19 @@ Esta función recibe la ruta del archivo de lematización. Durante su ejecución
 
 Contiene las funciones encargadas de escribir el fichero de salida con el resultado del programa.
 
-#### `print_matrix`
-
-#### `print_idf`
-
-#### `print_similitary_cosine`
-
 #### `print_table`
 
-#### `print_similitary_cosine_terminal`
+Esta función
+
+#### `print_similitary_cosine`
 
 ### tools
 
 Contiene funciones utilizadas durante la ejecución del programa.
 
 #### `documents_lemmatization`
+
+Esta función recibe la matriz con los documentos y el vector con los términos de lematización. Durante la ejecución, los términos de los documentos que estén en el fichero de lematización serán sustituidos por su correspondiente según el diccionario JSON de términos.
 
 #### `remove_stop_words`
 
