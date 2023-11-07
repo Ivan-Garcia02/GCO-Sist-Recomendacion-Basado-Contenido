@@ -30,7 +30,7 @@ matrix_tf = build_matrix_tf(matrix) # Matriz TF
 values_idf = get_idf(len(documents), matrix, terms) # Calcula DF + IDF
 matrix_tf_idf = build_matrix_tf_idf(matrix_tf, values_idf) # Matriz TF-IDF
 
-# Calcula la similitud entre documentos
+# Calcula la similaridad entre documentos
 matrix_tf_normalized = build_matrix_tf_normalized(matrix_tf) # Normalización de vectores
 similitary_vector = cosine_similitary(matrix_tf_normalized, terms)
 
