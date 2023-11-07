@@ -3,7 +3,7 @@ from file_reader import read_documents_file, read_stop_words_file, read_lemmatiz
 from tools import documents_lemmatization, remove_stop_words, get_terms, build_matrix_term_doc, get_idf, build_matrix_tf, build_matrix_tf_idf, build_matrix_tf_normalized, cosine_similitary
 from printer import print_table, print_similitary_cosine
 
-# python3 src/main.py -d test_files/documents-01.txt -s test_files/stop-words-en.txt -l test_files/corpus-en.txt
+# python3 src/main.py -d test_files/documents/documents-01.txt -s test_files/stop-words/stop-words-en.txt -l test_files/corpus/corpus-en.txt
 
 parser = argparse.ArgumentParser(prog='Métodos Basados en Contenido', description='Sistemas de Recomendación')
 parser.add_argument('-d', '--documentsPath', type=str, required=True, help="Fichero de entrada de texto plano con documentos")
@@ -35,8 +35,7 @@ matrix_tf_normalized = build_matrix_tf_normalized(matrix_tf) # Normalización de
 similitary_vector = cosine_similitary(matrix_tf_normalized, terms)
 
 max_string_length = max (len(word) for word in terms)
-# Imprimir por terminal
 for index_doc in range(len(documents)):
     print_table(index_doc, matrix, matrix_tf, matrix_tf_idf, values_idf, terms, max_string_length)
-print() #Imprimir salto de linea
+print()
 print_similitary_cosine(similitary_vector)

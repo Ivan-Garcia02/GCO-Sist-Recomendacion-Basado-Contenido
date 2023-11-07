@@ -4,11 +4,11 @@
 
 ## Instrucciones de instalación
 
-Durante el desarrollo del proyecto no se ha hecho uso de ninguna librería externa, por lo que para su ejecución debería bastar con la instalación del intérprete de Python.S
+Durante el desarrollo del proyecto no se ha hecho uso de ninguna librería externa, por lo que para su ejecución debería bastar con la instalación del intérprete de Python.
 
 ## Descripción del código
 
-El código del proyecto se encuentra dividido en varios ficheros.
+El programa se encarga de procesar un conjunto de documentos, lo que involucra la limpieza y el análisis del texto. Luego, calcula la importancia de las palabras en cada documento mediante los valores de TF (Frecuencia del Término), IDF (Frecuencia Inversa del Documento) y TF-IDF para cada palabra en cada documento. Finalmente, el programa compara la similitud entre los documentos en función de sus contenidos y presenta los resultados en tablas.
 
 ### main
 
