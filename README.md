@@ -30,9 +30,45 @@ Esta función recibe la ruta del fichero que contiene las palabras de parada. Du
 
 Esta función recibe la ruta del archivo de lematización. Durante su ejecución, lee el archivo y devuelve un diccionario JSON que contiene la asociación de palabras para la lematización, resultado del análisis del archivo JSON.
 
+### file_writer
+
+Contiene las funciones encargadas de escribir el fichero de salida con el resultado del programa.
+
+#### `print_matrix`
+
+#### `print_idf`
+
+#### `print_similitary_cosine`
+
+#### `print_table`
+
+#### `print_similitary_cosine_terminal`
+
+### tools
+
+Contiene funciones utilizadas durante la ejecución del programa.
+
+#### `documents_lemmatization`
+
+#### `remove_stop_words`
+
+#### `get_terms`
+
+#### `build_matrix_term_doc`
+
+#### `get_idf`
+
+#### `build_matrix_tf_idf`
+
+#### `get_length_vector`
+
+#### `build_matrix_tf_normalized`
+
+#### `cosine_similitary`
+
 ## Ejemplo de uso
 
-Un ejemplo de uso sería el siguiente: `python3 main.py -d documents.txt -s stop-words.txt -l corpus.txt`
+Un ejemplo de uso sería el siguiente: `python3 main.py -d documents.txt -s stop-words.txt -l corpus.txt -f out.txt`
 
 Ejecutamos el intérprete _python3_ con el fichero _main.py_ y añadimos las opciones para la ejecución:
 
